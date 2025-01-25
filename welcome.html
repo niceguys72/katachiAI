@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome!</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* Aligns content at the top */
+      align-items: center;
+      height: 100vh;
+      background-color: rgb(48, 48, 48);
+      color: rgb(255, 205, 205);
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-top: 90px; /* Adjusts the gap from the top */
+    }
+
+
+    .input-box {
+      width: 300px;
+      height: 30px;
+      background-color: rgb(60, 60, 60);
+      border: none;
+      color: white;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      margin-top: 280px;
+    }
+
+    .box-title {
+      color: rgb(255, 205, 205);;
+      font-size: 18px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to katachiAI</h1>
+  <input class="input-box" type="text" placeholder="Enter your API key" />
+  <button id="submitBtn">Submit</button>
+  <h2 class="box-title">Input Gemini API Key</h2>
+</body>
+</html>
