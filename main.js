@@ -2,6 +2,40 @@ const { app, BrowserWindow } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const electronReload = require('electron-reload');
+const express = require('express');
+const expressApp = express();
+expressApp.use(express.json());
+const cors = require('cors');
+expressApp.use(cors());
+expressApp.use(express.urlencoded({ extended: true }));
+
+
+const SERVER_PORT = 3636;
+
+expressApp.post('/submit-api-key', (req, res) => {
+  const apiKey = req.body.apiKey;
+  if (apiKey) {
+    try {
+      fs.writeFileSync(path.join(__dirname, 'welcome.txt'), apiKey);
+      fs.renameSync(
+        path.join(__dirname, 'welcome.txt'),
+        path.join(__dirname, 'index.txt')
+      );
+      console.log('API key saved successfully');
+      if (mainWindow) {
+        mainWindow.loadFile('index.html');
+      }
+    } catch (error) {
+      console.error('Error saving API key:', error);
+    }
+    
+  }
+});
+
+expressApp.listen(SERVER_PORT, () => {
+  console.log(`Express server running on http://localhost:${SERVER_PORT}`);
+});
+
 
 let mainWindow;
 
