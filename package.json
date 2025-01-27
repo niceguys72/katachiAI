@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.2",
-    "electron-reload": "^2.0.0-alpha.1"
+    "ejs": "^3.1.10",
+    "electron-reload": "^2.0.0-alpha.1",
+    "express": "^4.21.2"
   }
 }

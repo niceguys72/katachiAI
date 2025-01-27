@@ -9,7 +9,7 @@ const cors = require('cors');
 expressApp.use(cors());
 expressApp.use(express.urlencoded({ extended: true }));
 expressApp.use(express.static('public'))
-app.engine('html', require('ejs').renderFile);
+expressApp.engine('html', require('ejs').renderFile);
 
 const SERVER_PORT = 3636;
 

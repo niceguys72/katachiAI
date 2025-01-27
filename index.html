@@ -77,9 +77,11 @@
   <!-- Main Content -->
   <div class="content">
     <h1>Welcome to KatachiAI</h1>
-    <p>
-      This is your starting page. Use the navigation bar at the top to explore the application.
-    </p>
+    <% if (folderLength === 0) { %>
+      <p>
+        Your "decks" folder is empty. Use the "Add" button in the navigation bar to get started.
+      </p>
+    <% } %>
   </div>
 </body>
 </html>
