@@ -9,12 +9,24 @@ const cors = require('cors');
 expressApp.use(cors());
 expressApp.use(express.urlencoded({ extended: true }));
 expressApp.use(express.static('public'))
+app.engine('html', require('ejs').renderFile);
 
 const SERVER_PORT = 3636;
 
 expressApp.get('/main-page', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  const folderPath = path.join(__dirname, 'decks');
+  let folderLength = 0;
+
+  try {
+    const files = fs.readdirSync(folderPath);
+    folderLength = files.length;
+  } catch (error) {
+    console.error('Error reading the folder:', error);
+  }
+  console.log(folderLength);
+  res.render(path.join(__dirname, 'index.html'), { folderLength });
 });
+
 
 expressApp.post('/submit-api-key', (req, res) => {
   const apiKey = req.body.apiKey;
