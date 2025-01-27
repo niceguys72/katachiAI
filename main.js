@@ -8,9 +8,13 @@ expressApp.use(express.json());
 const cors = require('cors');
 expressApp.use(cors());
 expressApp.use(express.urlencoded({ extended: true }));
-
+expressApp.use(express.static('public'))
 
 const SERVER_PORT = 3636;
+
+expressApp.get('/main-page', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 expressApp.post('/submit-api-key', (req, res) => {
   const apiKey = req.body.apiKey;
@@ -22,13 +26,17 @@ expressApp.post('/submit-api-key', (req, res) => {
         path.join(__dirname, 'index.txt')
       );
       console.log('API key saved successfully');
+
       if (mainWindow) {
-        mainWindow.loadFile('index.html');
+        const newWindow = createWindow();
+        mainWindow.close();
+        mainWindow = newWindow;
       }
+      res.sendStatus(200);
     } catch (error) {
-      console.error('Error saving API key:', error);
+      console.log('Error saving API key:', error);
+      res.sendStatus(500);
     }
-    
   }
 });
 
@@ -36,46 +44,44 @@ expressApp.listen(SERVER_PORT, () => {
   console.log(`Express server running on http://localhost:${SERVER_PORT}`);
 });
 
-
 let mainWindow;
 
-function getStartPage() {
-  const welcomeFilePath = path.join(__dirname, 'welcome.txt');
-  const indexFilePath = path.join(__dirname, 'index.txt');
-
-  if (fs.existsSync(welcomeFilePath)) {
-    return 'welcome.html';
-  } else if (fs.existsSync(indexFilePath)) {
-    return 'index.html';
-  }
-}
-
 function createWindow() {
-  const startPage = getStartPage();
-
-  mainWindow = new BrowserWindow({
+  const window = new BrowserWindow({
     width: 480,
     height: 720,
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false
     },
   });
 
-  mainWindow.setTitle('katachiAI');
-  mainWindow.setIcon(path.join(__dirname, 'logo.png'));
-  mainWindow.loadFile(startPage);
-  mainWindow.webContents.once('did-finish-load', () => {
-    mainWindow.setTitle('katachiAI');
+  window.setTitle('katachiAI');
+  window.setIcon(path.join(__dirname, 'logo.png'));
+
+  // Load appropriate content based on file existence
+  if (fs.existsSync(path.join(__dirname, 'welcome.txt'))) {
+    window.loadFile(path.join(__dirname, 'welcome.html'));
+  } else {
+    // Load main page through Express server
+    window.loadURL(`http://localhost:${SERVER_PORT}/main-page`);
+  }
+
+  window.webContents.once('did-finish-load', () => {
+    window.setTitle('katachiAI');
   });
+
+  return window;
 }
 
-// Enable live-reloading for the Electron app
 electronReload(__dirname, {
-  ignored: /node_modules|[\/\\]\./, // Ignore node_modules and hidden files
+  ignored: /node_modules|[\/\\]\./,
 });
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+  mainWindow = createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
