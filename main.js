@@ -13,6 +13,20 @@ expressApp.engine('html', require('ejs').renderFile);
 
 const SERVER_PORT = 3636;
 
+expressApp.post('/new', (req, res) => {
+  const newWindow= new BrowserWindow({
+    width: 480,
+    height: 720,
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    },
+  });
+  newWindow.loadFile(path.join(__dirname, 'new.html'));
+  newWindow.setTitle('Create a deck!');
+});
+
 expressApp.get('/main-page', (req, res) => {
   const folderPath = path.join(__dirname, 'decks');
   let folderLength = 0;
@@ -23,7 +37,7 @@ expressApp.get('/main-page', (req, res) => {
   } catch (error) {
     console.error('Error reading the folder:', error);
   }
-  console.log(folderLength);
+  
   res.render(path.join(__dirname, 'index.html'), { folderLength });
 });
 

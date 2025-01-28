@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome!</title>
   <style>
-    /* Reset and base styles */
     body {
       margin: 0;
       padding: 0;
@@ -20,27 +19,29 @@
       overflow: hidden;
     }
 
-    /* Navigation bar */
     .navbar {
       position: fixed;
       top: 0;
-      width: 100%;
-      height: 32px;
+      width: 80%;
+      max-width: 720px;
       background-color: #333;
       display: flex;
       justify-content: space-around;
       align-items: center;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
       z-index: 1000;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+      border-radius: 8px;
     }
 
-    /* Navigation links */
     .nav-item {
       text-decoration: none;
       color: #fff;
       font-size: 14px;
       font-weight: bold;
-      padding: 8px 16px;
+      padding: 8px 30px;
       border-radius: 4px;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
@@ -63,23 +64,37 @@
       max-width: 600px;
       line-height: 1.6;
     }
+
+    .navbar form {
+    margin: 0;
+    }
+    .navbar button {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <!-- Navigation Bar -->
   <nav class="navbar">
-    <a href="#" class="nav-item">New</a>
-    <a href="#" class="nav-item">Add</a>
-    <a href="#" class="nav-item">Browse</a>
-    <a href="#" class="nav-item">Stats</a>
-  </nav>
-
-  <!-- Main Content -->
+  <form action="http://localhost:3636/new" method="POST">
+    <button class="nav-item" type="submit">New</button>
+  </form>
+  <form action="http://localhost:3636/add" method="POST">
+    <button class="nav-item" type="submit">Add</button>
+  </form>
+  <form action="http://localhost:3636/browse" method="POST">
+    <button class="nav-item" type="submit">Browse</button>
+  </form>
+  <form action="http://localhost:3636/stats" method="POST">
+    <button class="nav-item" type="submit">Stats</button>
+  </form>
+</nav>
   <div class="content">
     <h1>Welcome to KatachiAI</h1>
     <% if (folderLength === 0) { %>
       <p>
-        Your "decks" folder is empty. Use the "Add" button in the navigation bar to get started.
+        You currently do not have any decks. Use the "New" button in the navigation bar to create your first deck!
       </p>
     <% } %>
   </div>
