@@ -13,8 +13,15 @@ expressApp.engine('html', require('ejs').renderFile);
 
 const SERVER_PORT = 3636;
 
+let newWindow = null;
+
 expressApp.post('/new', (req, res) => {
-  const newWindow= new BrowserWindow({
+  if (newWindow && !newWindow.isDestroyed()) {
+    newWindow.focus();
+    return
+  }
+
+  newWindow = new BrowserWindow({
     width: 480,
     height: 720,
     resizable: false,
@@ -25,6 +32,10 @@ expressApp.post('/new', (req, res) => {
   });
   newWindow.loadFile(path.join(__dirname, 'new.html'));
   newWindow.setTitle('Create a deck!');
+
+  newWindow.on('closed', () => {
+    newWindow = null;
+  });
 });
 
 expressApp.get('/main-page', (req, res) => {
